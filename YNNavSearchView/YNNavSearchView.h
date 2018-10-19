@@ -14,6 +14,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *placeholderStr;
 
+@property (nonatomic, copy) void (^cancelBlock)(void);
 @property (nonatomic, copy) void (^searchResult)(void);
 
 @end

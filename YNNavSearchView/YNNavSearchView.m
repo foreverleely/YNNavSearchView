@@ -41,7 +41,7 @@
 #define SCREEN_WIDTH [[UIScreen mainScreen] bounds].size.width
 #endif
 
-//宽缩放
+// width zoom
 #ifndef S_X
 #define S_X(x)  ((x) * SCREEN_WIDTH / DESIGN_WIDTH)
 #endif
@@ -62,6 +62,10 @@
 #ifndef UIColorFromRGB
 #define UIColorFromRGB(r,g,b)               UIColorFromRGBA(r,g,b,1.0)
 #endif
+
+static CGFloat cacelBtnWidth = 44;
+static CGFloat searchBtnWidth = 44;
+static CGFloat viewHeight = 40;
 
 @interface YNNavSearchView()<UITextFieldDelegate>
 
@@ -92,18 +96,18 @@
 
 - (void)configUI {
     
-    self.frame = CGRectMake(0, 0, SCREEN_WIDTH, 40);
+    self.frame = CGRectMake(0, 0, SCREEN_WIDTH, viewHeight);
     
     self.cancelBtn.hidden = YES;
     [self addSubview:self.cancelBtn];
-    self.cancelBtn.frame = CGRectMake(0, 0, 44, 40);
+    self.cancelBtn.frame = CGRectMake(0, 0, cacelBtnWidth, viewHeight);
     
     self.searchBtn.hidden = YES;
     [self addSubview:self.searchBtn];
-    self.searchBtn.frame = CGRectMake(SCREEN_WIDTH - 80 - 15, 0, 80, 40);
+    self.searchBtn.frame = CGRectMake(SCREEN_WIDTH - 80 - 15, 0, searchBtnWidth, viewHeight);
     
     [self addSubview:self.searchTextField];
-    self.searchTextField.frame = CGRectMake(16.5, 0, SCREEN_WIDTH - 48, 40);
+    self.searchTextField.frame = CGRectMake(16.5, 0, SCREEN_WIDTH - 48, viewHeight);
 }
 
 #pragma mark - Private Method
@@ -112,24 +116,26 @@
     if (isEdit) {
         [UIView animateWithDuration:0.1 animations:^{
             self.cancelBtn.hidden = NO;
-            self.searchTextField.frame = CGRectMake(44, 0, SCREEN_WIDTH - 15 - 44 - 80, 40);
+            self.searchTextField.frame = CGRectMake(44, 0, SCREEN_WIDTH - 15 - 44 - 80, viewHeight);
             self.searchBtn.hidden = NO;
         }];
-        [self layoutIfNeeded];
     } else {
         [self.searchTextField resignFirstResponder];
         [UIView animateWithDuration:0.1 animations:^{
             self.cancelBtn.hidden = YES;
-            self.searchTextField.frame = CGRectMake(16.5, 0, SCREEN_WIDTH - 48, 40);
+            self.searchTextField.frame = CGRectMake(16.5, 0, SCREEN_WIDTH - 48, viewHeight);
             self.searchBtn.hidden = YES;
         }];
-        [self setNeedsLayout];
     }
+    [self setNeedsLayout];
 }
 
 #pragma mark - UIControl Actions
 - (void)cancelSearch {
     [self updateNavSearch:NO];
+    if (self.cancelBlock) {
+        self.cancelBlock();
+    }
 }
 
 - (void)searchButtonClick {
