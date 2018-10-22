@@ -64,7 +64,7 @@
 #endif
 
 static CGFloat cacelBtnWidth = 44;
-static CGFloat searchBtnWidth = 44;
+static CGFloat searchBtnWidth = 80;
 static CGFloat viewHeight = 40;
 
 @interface YNNavSearchView()<UITextFieldDelegate>
